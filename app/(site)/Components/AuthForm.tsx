@@ -6,10 +6,13 @@ import Input from './inputs/Input'
 import Button from './Button'
 import AuthSocialButton from './AuthSocialButton'
 import { BsGithub, BsGoogle } from 'react-icons/bs'
+import axios from 'axios'
+import { toast } from 'react-hot-toast'
+import { signIn } from 'next-auth/react'
 
 type Variant = 'LOGIN' | 'REGISTER'
 
-const Authform = () => {
+const AuthForm = () => {
     const [variant, setVariant] = useState<Variant>('LOGIN')
     const [isLoading, setIsLoading] = useState(false)
 
@@ -37,20 +40,44 @@ const Authform = () => {
 
     const onSubmit: SubmitHandler<FieldValues> = (data) => {
         setIsLoading(true)
+        console.log('hi')
 
         if (variant === 'REGISTER') {
-            // Axios Register
+            axios.post('/api/register', data)
+                .catch(() => toast.error("Something went wrong"))
+                .finally(() => setIsLoading(false))
         }
 
         if (variant === 'LOGIN') {
-            ///NextAuth SignIn
+            signIn('credentials', {
+                ...data,
+                redirect: false
+            })
+                .then((callback) => {
+                    if (callback?.error) {
+                        toast.error('Invalid credentials')
+                    }
+                    if (callback?.ok && !callback?.error) {
+                        toast.success('Logged in!')
+                    }
+                })
+                .finally(() => setIsLoading(false))
         }
     }
 
     const socialAction = (action: string) => {
         setIsLoading(true)
 
-        // NextAuth Social SignIn
+        signIn(action, { redirect: false })
+            .then((callback) => {
+                if (callback?.error) {
+                    toast.error('Invalid Credentials')
+                }
+                if (callback?.ok && !callback?.error) {
+                    toast.success('Logged in!')
+                }
+            })
+            .finally(() => setIsLoading(false))
     }
 
     return (
@@ -68,54 +95,54 @@ const Authform = () => {
             <form
                 className="space-y-6"
                 onSubmit={handleSubmit(onSubmit)}
-            />
-            {variant === "REGISTER" &&
+            >
+                {variant === "REGISTER" &&
+                    <Input
+                        id="name"
+                        label="Name"
+                        register={register}
+                        errors={errors} />
+                }
                 <Input
-                    id="name"
-                    label="Name"
+                    id="email"
+                    label="Email"
                     register={register}
                     errors={errors} />
-            }
-            <Input
-                id="email"
-                label="Email"
-                register={register}
-                errors={errors} />
-            <Input
-                id="password"
-                label="Password"
-                register={register}
-                errors={errors} />
-            <div>
-                <Button
-                    disabled={isLoading}
-                    fullWidth
-                    type="submit"
-                >
-                    {variant === 'LOGIN' ? 'Sign in' : 'Register'}
-                </Button>
-            </div>
-            <div className='mt-6'>
-                <div className='relative'>
-                    <div className='absolute inset-0 flex items-center'>
-                        <div className='w-full border-t border-gray-300' />
-                    </div>
-                    <div className='relative flex justify-center text-sm' >
-                        <span className='bg-white px-2 text-gray-500'>Or continue with</span>
+                <Input
+                    id="password"
+                    label="Password"
+                    register={register}
+                    errors={errors} />
+                <div>
+                    <Button
+                        disabled={isLoading}
+                        fullWidth
+                        type="submit"
+                    >
+                        {variant === 'LOGIN' ? 'Sign in' : 'Register'}
+                    </Button>
+                </div>
+                <div className='mt-6'>
+                    <div className='relative'>
+                        <div className='absolute inset-0 flex items-center'>
+                            <div className='w-full border-t border-gray-300' />
+                        </div>
+                        <div className='relative flex justify-center text-sm' >
+                            <span className='bg-white px-2 text-gray-500'>Or continue with</span>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div className="mt-6 flex gap-2">
-                <AuthSocialButton
-                    icon={BsGithub}
-                    onClick={() => socialAction('github')}
-                />
-                <AuthSocialButton
-                    icon={BsGoogle}
-                    onClick={() => socialAction('google')}
-                />
-            </div>
-            <div className='
+                <div className="mt-6 flex gap-2">
+                    <AuthSocialButton
+                        icon={BsGithub}
+                        onClick={() => socialAction('github')}
+                    />
+                    <AuthSocialButton
+                        icon={BsGoogle}
+                        onClick={() => socialAction('google')}
+                    />
+                </div>
+                <div className='
             flex
             gap-2
             justify-center
@@ -124,15 +151,16 @@ const Authform = () => {
             px-2
             text-gray-500
             '>
-                <div>
-                    {variant === 'LOGIN' ? "New to Messenger" : 'Already have an account"'}
+                    <div>
+                        {variant === 'LOGIN' ? "New to Messenger" : 'Already have an account?'}
+                    </div>
+                    <div className='underline cursor-pointer' onClick={toggleVariant}>
+                        {variant === 'LOGIN' ? 'Create an account' : 'Login'}
+                    </div>
                 </div>
-                <div className='underline cursor-pointer' onClick={toggleVariant}>
-
-                </div>
-            </div>
+            </form>
         </div>
     );
 }
 
-export default Authform;
+export default AuthForm;
