@@ -13,13 +13,14 @@ const Avatar: React.FC<AvatarProps> = ({ user }) => {
         <div className="relative">
             <div className="
             relative
-            inline-block
+            flex
             rounded-full
             overflow-hidden
             h-9
             w-9
             md:h-11
             md:w-11
+            items-center
             ">
                 <Image
                     alt='Avatar'
@@ -28,7 +29,7 @@ const Avatar: React.FC<AvatarProps> = ({ user }) => {
                 />
             </div>
             <span
-                className='first-letter:
+                className='
                 absolute
                 block
                 rounded-full
