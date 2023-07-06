@@ -31,10 +31,10 @@ export async function POST(
                     users: {
                         connect: [
                             ...members.map((member: { value: string }) => ({
-                                id: members.value
+                                id: member.value
                             })),
                             {
-                                id: currentUser
+                                id: currentUser.id
                             }
                         ]
                     }
@@ -44,8 +44,12 @@ export async function POST(
                 }
             })
 
+            console.log(newConversation)
+
             return NextResponse.json(newConversation)
         }
+
+        console.log('hi')
         
         const existingConversations = await prisma.conversation.findMany({
             where: {
@@ -91,6 +95,7 @@ export async function POST(
         return NextResponse.json(newConversation)
 
     } catch (error: any) {
-        return new NextResponse('Internal Error', { status: 500})
+        console.log(error)
+        return new NextResponse('Internal Server Error', { status: 500 })
     }
 }
