@@ -3,7 +3,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 
 const prisma = new PrismaClient();
 
-export async function resetDb(req: NextApiRequest, res: NextApiResponse) {
+export default async function resetDb(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
     // Delete all data from all tables
     await prisma.user.deleteMany();
