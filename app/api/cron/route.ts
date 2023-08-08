@@ -3,10 +3,11 @@ import { NextApiRequest, NextApiResponse } from 'next';
 
 const prisma = new PrismaClient();
 
-export async function POST(req: NextApiRequest, res: NextApiResponse) {
+export async function POST(req: { method: string; }, res: { status: (arg0: number) => { (): any; new(): any; json: { (arg0: { error?: string; message?: string; }): void; new(): any; }; }; }) {
     if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
+  console.log('ey')
     // Delete all data from all tables
     await prisma.user.deleteMany();
     await prisma.account.deleteMany();
