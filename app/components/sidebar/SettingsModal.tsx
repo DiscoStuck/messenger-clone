@@ -4,7 +4,7 @@ import { User } from "@prisma/client"
 import axios from "axios"
 import { useRouter } from 'next/navigation'
 import React, { useState } from "react"
-import { FieldValue, FieldValues, SubmitHandler, useForm } from "react-hook-form"
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form"
 import { toast } from "react-hot-toast"
 import Image from 'next/image'
 import Input from "../inputs/Input"
