@@ -3,7 +3,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 
 const prisma = new PrismaClient();
 
-async function resetDb(req: NextApiRequest, res: NextApiResponse) {
+export async function resetDb(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
     // Delete all data from all tables
     await prisma.user.deleteMany();
@@ -50,5 +50,3 @@ async function resetDb(req: NextApiRequest, res: NextApiResponse) {
     res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 }
-
-export default resetDb
