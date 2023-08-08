@@ -30,6 +30,7 @@ const Avatar: React.FC<AvatarProps> = ({ user }) => {
                     alt='Avatar'
                     src={user?.image || '/images/placeholder.jpg'}
                     fill
+                    className="object-contain"
                 />
             </div>
             {isActive && (
@@ -49,7 +50,7 @@ const Avatar: React.FC<AvatarProps> = ({ user }) => {
                 md:w-3
                 '
                 />
-            )} 
+            )}
         </div>
     );
 }
