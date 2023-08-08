@@ -1,11 +1,11 @@
 import { PrismaClient } from '@prisma/client';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextRequest, NextResponse } from 'next/server';
 
 const prisma = new PrismaClient();
 
-export async function POST(req: { method: string; }, res: { status: (arg0: number) => { (): any; new(): any; json: { (arg0: { error?: string; message?: string; }): void; new(): any; }; }; }) {
+export async function POST(req: NextRequest) {
     if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
+      return NextResponse.json( { message: 'Method not allowed' }, { status: 405 } );
   }
   console.log('ey')
     // Delete all data from all tables
@@ -46,5 +46,5 @@ export async function POST(req: { method: string; }, res: { status: (arg0: numbe
     // Disconnect Prisma Client
     await prisma.$disconnect();
 
-    res.status(200).json({ message: 'Database reset successful' });
+    return NextResponse.json( { message: 'Database reset successful' }, { status: 200 } );
   }
