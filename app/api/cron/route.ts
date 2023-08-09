@@ -1,18 +1,20 @@
+
 import { PrismaClient } from '@prisma/client';
 import { NextRequest, NextResponse } from 'next/server';
 
-const prisma = new PrismaClient();
-
 export async function GET(req: NextRequest) {
-    // Delete all data from all tables
-    await prisma.user.deleteMany();
-    await prisma.account.deleteMany();
-    await prisma.conversation.deleteMany();
-    await prisma.message.deleteMany();
+    const prisma = new PrismaClient();
 
-    // Create users
-    const users = [
-      {
+    try {
+        // Delete all data from all tables
+        await prisma.user.deleteMany();
+        await prisma.account.deleteMany();
+        await prisma.conversation.deleteMany();
+        await prisma.message.deleteMany();
+
+        // Create users
+        const users = [
+                  {
         name: 'John',
         email: 'john@gmail.com',
         image: 'https://res.cloudinary.com/dqunjerlj/image/upload/v1691482972/pexels-photo-220453_hv5shk.webp',
@@ -27,20 +29,21 @@ export async function GET(req: NextRequest) {
         email: 'lydia@gmail.com',
         image: 'https://res.cloudinary.com/dqunjerlj/image/upload/v1691482972/pexels-photo-415829_qaivyk.webp',
       },
-    ];
+        ];
 
-    for (const user of users) {
-      await prisma.user.create({
-        data: {
-          name: user.name,
-          email: user.email,
-          image: user.image,
-        },
-      });
+        for (const user of users) {
+            await prisma.user.create({
+                data: {
+                    name: user.name,
+                    email: user.email,
+                    image: user.image,
+                },
+            });
+        }
+    } finally {
+        // Disconnect Prisma Client
+        await prisma.$disconnect();
     }
 
-    // Disconnect Prisma Client
-    await prisma.$disconnect();
-
     return NextResponse.json( { message: 'Database reset successful' }, { status: 200 } );
-  }
+}
