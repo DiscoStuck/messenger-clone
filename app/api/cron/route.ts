@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 const prisma = new PrismaClient();
 
-export async function handler(req: NextRequest) {
+export async function GET(req: NextRequest) {
     // Delete all data from all tables
     await prisma.user.deleteMany();
     await prisma.account.deleteMany();
