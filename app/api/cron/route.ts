@@ -31,14 +31,16 @@ export async function GET(req: NextRequest) {
       },
         ];
 
+        const createdUsers = [];
         for (const user of users) {
-            await prisma.user.create({
+            const createdUser = await prisma.user.create({
                 data: {
                     name: user.name,
                     email: user.email,
                     image: user.image,
                 },
             });
+            createdUsers.push(createdUser);
         }
     } finally {
         // Disconnect Prisma Client
