@@ -3,11 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 const prisma = new PrismaClient();
 
-export async function POST(req: NextRequest) {
-    if (req.method !== 'POST') {
-      return NextResponse.json( { message: 'Method not allowed' }, { status: 405 } );
-  }
-  console.log('ey')
+export async function handler(req: NextRequest) {
     // Delete all data from all tables
     await prisma.user.deleteMany();
     await prisma.account.deleteMany();
