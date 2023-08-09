@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(req: NextRequest) {
     const prisma = new PrismaClient();
-
+const createdUsers = [];
     try {
         // Delete all data from all tables
         await prisma.user.deleteMany();
@@ -31,7 +31,7 @@ export async function GET(req: NextRequest) {
       },
         ];
 
-        const createdUsers = [];
+        
         for (const user of users) {
             const createdUser = await prisma.user.create({
                 data: {
@@ -47,5 +47,5 @@ export async function GET(req: NextRequest) {
         await prisma.$disconnect();
     }
 
-    return NextResponse.json( { message: 'Database reset successful' }, { status: 200 } );
+    return NextResponse.json( { message: 'Database reset successful', dataSaved: createdUsers }, { status: 200 } );
 }
