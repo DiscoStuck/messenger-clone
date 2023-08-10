@@ -6,6 +6,7 @@ export async function GET(req: NextRequest) {
 
   const createdUsers = [];
   try {
+    prisma.$connect()
     // Delete all data from all tables
     const deletedUsers = await prisma.user.deleteMany();
     const deletedAccounts = await prisma.account.deleteMany();
