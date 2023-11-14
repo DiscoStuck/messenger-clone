@@ -1,7 +1,7 @@
 # Messenger clone
 
 ![Messenger clone screenshot](/public/images/messenger-clone.png)
-Space-themed property rental web application. I created this project following [this course](https://www.youtube.com/watch?v=c_-b_isI4vg ab_channel=CodeWithAntonio).
+Space-themed property rental web application. I created this project following [this course](https://www.youtube.com/watch?v=PGPGcKBpAk8&ab_channel=CodeWithAntonio).
 
 Technologies used:
 
